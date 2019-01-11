@@ -7,10 +7,11 @@ def main():
     target = "10.12.1.144"
     agent_name = "Ethan Hunt "
     ports = [3, 33, 333, 3333, 33333]
+    recv = []
 
     print "Establishing connection ...\n"
 
-    skt = conf.L3socket(iface="eth0")
+#    skt = conf.L3socket(iface="eth0")
 
     print "Connection established!\n"
     print "Beginning cracking...\n"
@@ -19,7 +20,7 @@ def main():
         for i in range(10000):
             pkt = packet_craft(agent_name, i, p, target)
             # Verbosity level is numberic.  0 is for a silent sned
-            _, recv = skt.sr(pkt, verbose=0, timeout=0)
+            recv, _ = sr(pkt, verbose=0, timeout=0)
             print "Sent packet {:d} on port {:d}\n".format(i, p)
 
     print "Done cracking!\n"
