@@ -19,7 +19,7 @@ def main():
         for i in range(10000):
             pkt = packet_craft(agent_name, i, p, target)
             # Verbosity level is numberic.  0 is for a silent sned
-            skt.send(pkt, verbose=0, timeout=0)
+            _, recv = skt.sr(pkt, verbose=0, timeout=0)
             print "Sent packet {:d} on port {:d}\n".format(i, p)
 
     print "Done cracking!\n"
