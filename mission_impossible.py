@@ -6,21 +6,22 @@ def main():
     # Setup packet parameters
     target = "10.12.1.144"
     agent_name = "Ethan Hunt "
-    ports = [3, 33, 333, 3333, 33333]
+    ports = [33333]
     recv = []
 
     print "Establishing connection ...\n"
 
-#    skt = conf.L3socket(iface="eth0")
+    # skt = conf.L3socket(iface="eth0")
 
     print "Connection established!\n"
     print "Beginning cracking...\n"
 
-    for p in ports:
-        for i in range(10000):
+    # for p in ports:
+    for i in range(10000):
+        for p in ports:
             pkt = packet_craft(agent_name, i, p, target)
-            # Verbosity level is numberic.  0 is for a silent sned
-            recv, _ = sr(pkt, verbose=0, timeout=0)
+            # Verbosity level is numeric.  0 is for a silent send
+            recv, _ = sr(pkt, verbose=0)
             print "Sent packet {:d} on port {:d}\n".format(i, p)
 
     print "Done cracking!\n"
@@ -33,5 +34,4 @@ def packet_craft(agent_name, code_attempt, source_port, target):
     return pkt
 
 
-if __name__ == '__main__':
-    main()
+main()
